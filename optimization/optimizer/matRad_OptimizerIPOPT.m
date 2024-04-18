@@ -117,6 +117,7 @@ classdef matRad_OptimizerIPOPT < matRad_Optimizer
         end
         
         function obj = optimize(obj,w0,optiProb,dij,cst)
+            disp(obj);
             matRad_cfg = MatRad_Config.instance();
             
             % set optimization options            
@@ -165,7 +166,7 @@ classdef matRad_OptimizerIPOPT < matRad_Optimizer
                         catch
                             matRad_cfg.dispInfo('Manual termination with q not possible due to failing callback setup.\n');
                         end
-                end                
+                end
             end
             
             %ipoptStruct.options = obj.options;

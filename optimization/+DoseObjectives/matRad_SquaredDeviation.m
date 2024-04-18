@@ -27,7 +27,7 @@ classdef matRad_SquaredDeviation < DoseObjectives.matRad_DoseObjective
     end
     
     properties
-        parameters = {60};
+        parameters = {60}; % Default reference Dose
         penalty = 1;
     end
     

@@ -2173,6 +2173,7 @@ pln.numOfFractions  = parseStringAsNum(get(handles.editFraction,'String'),false)
 contents            = get(handles.popupRadMode,'String'); 
 pln.radiationMode   = contents{get(handles.popupRadMode,'Value')}; % either photons / protons / carbon
 contents            = get(handles.popUpMachine,'String'); 
+disp(get(handles.popUpMachine,'Value'));
 pln.machine         = contents{get(handles.popUpMachine,'Value')}; 
 
 if (~strcmp(pln.radiationMode,'photons'))

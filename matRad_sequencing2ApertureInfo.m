@@ -30,7 +30,7 @@ function apertureInfo = matRad_sequencing2ApertureInfo(Sequencing,stf)
 
 % MLC parameters:
 bixelWidth = stf(1).bixelWidth; % [mm]
-numOfMLCLeafPairs = 80;
+numOfMLCLeafPairs = 60;
 %     define central leaf pair (here we want the 0mm position to be in the
 %     center of a leaf pair (e.g. leaf 41 stretches from -2.5mm to 2.5mm
 %     for a bixel/leafWidth of 5mm and 81 leaf pairs)
@@ -51,9 +51,9 @@ for i=1:size(stf,2)
     rayPos_bev = reshape([stf(i).ray.rayPos_bev],3,[]);
     X = rayPos_bev(1,:)';
     Z = rayPos_bev(3,:)';
-    
+
     % create ray-map
-    maxX = max(X); minX = min(X);    
+    maxX = max(X); minX = min(X);
     maxZ = max(Z); minZ = min(Z);
     
     dimX = (maxX-minX)/stf(i).bixelWidth + 1;
@@ -141,11 +141,9 @@ for i=1:size(stf,2)
     
     topLeafPair = centralLeafPair - topLeafPairPos/bixelWidth;
     bottomLeafPair = centralLeafPair - bottomLeafPairPos/bixelWidth;
-        
     % create bool map of active leaf pairs
     isActiveLeafPair = zeros(numOfMLCLeafPairs,1);
     isActiveLeafPair(topLeafPair:bottomLeafPair) = 1;
-        
     % create MLC window
     % getting the dimensions of the MLC in order to be able to plot the
     % shapes using physical coordinates

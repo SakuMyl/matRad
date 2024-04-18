@@ -83,7 +83,7 @@ classdef (Abstract) matRad_DoseOptimizationFunction
                 end
                 
                 %Create objective / constraint from class name
-                obj = eval([s.className '(s)']);       
+                obj = eval([s.className '(s)']);
                 
                 env = matRad_getEnvironment();
                 
@@ -133,6 +133,11 @@ classdef (Abstract) matRad_DoseOptimizationFunction
                     
                 case 'EUD'
                     s.className = 'DoseObjectives.matRad_EUD';
+                    s.parameters{1} = old_s.dose;
+                    s.parameters{2} = old_s.EUD;
+
+                case 'max EUD'
+                    s.className = 'DoseObjectives.matRad_MaxEUD';
                     s.parameters{1} = old_s.dose;
                     s.parameters{2} = old_s.EUD;
                     

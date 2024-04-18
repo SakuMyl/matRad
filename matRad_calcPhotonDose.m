@@ -304,7 +304,7 @@ for i = 1:dij.numOfBeams % loop over all beams
         doseTmpContainer{mod(counter-1,numOfBixelsContainer)+1,1} = sparse(VdoseGrid(ix),1,bixelDose,dij.doseGrid.numOfVoxels,1);
 
         matRad_calcDoseFillDij;
-               
+
     end
 end
 

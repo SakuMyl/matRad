@@ -1,4 +1,4 @@
-function [optResult,optimizer] = matRad_directApertureOptimization(dij,cst,apertureInfo,optResult,pln)
+ function [optResult,optimizer] = matRad_directApertureOptimization(dij,cst,apertureInfo,optResult,pln)
 % matRad function to run direct aperture optimization
 %
 % call
@@ -58,14 +58,23 @@ for i = 1:size(cst,1)
         end
         
         obj = obj.setDoseParameters(obj.getDoseParameters()/pln.numOfFractions);
-        
         cst{i,6}{j} = obj;        
     end
 end
 
-% resizing cst to dose cube resolution 
+% resizing cst to dose cube resolution
 cst = matRad_resizeCstToGrid(cst,dij.ctGrid.x,dij.ctGrid.y,dij.ctGrid.z,...
                                  dij.doseGrid.x,dij.doseGrid.y,dij.doseGrid.z);
+
+% Resize dose for voxel based optimization to dose grid
+for i = 1:size(cst, 1)
+    for j = 1:size(cst{i, 6}, 2)
+        if ~isempty(cst{i,6}) && (isa(cst{i,6}{j}, 'DoseObjectives.matRad_VoxelSquaredDeviation') || isa(cst{i,6}{j}, 'DoseObjectives.matRad_VoxelSquaredOverdosing'))
+            cst{i,6}{j}.dose = imresize3(cst{i,6}{j}.dose, dij.doseGrid.dimensions);
+            cst{i,6}{j}.dose = cst{i,6}{j}.dose(cst{i,4}{1});
+        end
+    end
+end
 
 % update aperture info vector
 apertureInfo = matRad_OptimizationProblemDAO.matRad_daoVec2ApertureInfo(apertureInfo,apertureInfo.apertureVector);
@@ -98,8 +107,8 @@ apertureInfo = matRad_OptimizationProblemDAO.matRad_daoVec2ApertureInfo(aperture
 
 % logging final results
 matRad_cfg.dispInfo('Calculating final cubes...\n');
-resultGUI = matRad_calcCubes(apertureInfo.bixelWeights,dij);
-resultGUI.w    = apertureInfo.bixelWeights;
-resultGUI.wDAO = apertureInfo.bixelWeights;
-resultGUI.apertureInfo = apertureInfo;
+optResult = matRad_calcCubes(apertureInfo.bixelWeights,dij);
+optResult.w    = apertureInfo.bixelWeights;
+optResult.wDAO = apertureInfo.bixelWeights;
+optResult.apertureInfo = apertureInfo;
 

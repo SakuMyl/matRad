@@ -41,7 +41,7 @@ if nargin < 8
 end
 
 if nargin < 9
-    extrapVal = NaN;
+    extrapVal = 0;
 end
 
 switch env

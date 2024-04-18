@@ -108,20 +108,20 @@ if isfield(files,'rtplan')
 end
 
 %% import stf
-if isfield(files,'rtplan')
-    if ~(cellfun(@isempty,files.rtplan(1,:)))
-        if (strcmp(pln.radiationMode,'protons') || strcmp(pln.radiationMode,'carbon'))
-            %% import steering file
-            % pln output because bixelWidth is determined via the stf
-            [stf, pln] = matRad_importDicomSteeringParticles(ct, pln, files.rtplan);
-        elseif strcmp(pln.radiationMode, 'photons') && isfield(pln.propStf,'collimation')
-            % return correct angles in pln 
-            [stf, pln] = matRad_importDicomSteeringPhotons(pln);
-        else
-            warning('No support for DICOM import of steering information for this modality.');
-        end
-    end
-end
+% if isfield(files,'rtplan')
+%     if ~(cellfun(@isempty,files.rtplan(1,:)))
+%         if (strcmp(pln.radiationMode,'protons') || strcmp(pln.radiationMode,'carbon'))
+%             %% import steering file
+%             % pln output because bixelWidth is determined via the stf
+%             [stf, pln] = matRad_importDicomSteeringParticles(ct, pln, files.rtplan);
+%         elseif strcmp(pln.radiationMode, 'photons') && isfield(pln.propStf,'collimation')
+%             % return correct angles in pln 
+%             [stf, pln] = matRad_importDicomSteeringPhotons(pln);
+%         else
+%             warning('No support for DICOM import of steering information for this modality.');
+%         end
+%     end
+% end
 
 %% import dose cube
 if isfield(files,'rtdose')

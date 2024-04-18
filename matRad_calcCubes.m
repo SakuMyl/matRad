@@ -117,7 +117,7 @@ if any(dij.ctGrid.dimensions~=dij.doseGrid.dimensions)
            
        end
        
-   end   
+   end
 end
 
 end

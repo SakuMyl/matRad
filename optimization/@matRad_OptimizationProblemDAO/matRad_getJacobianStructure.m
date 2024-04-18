@@ -54,8 +54,8 @@ jacobStruct_dos_bixel = matRad_getJacobianStructure@matRad_OptimizationProblem(o
 % for apertures I need to check if the very beam orientation of the aperture has a bixel
 % that potentially influences the constraint
 
-% for leaves I need to check if that particular leaf row has bixels that
 % potentially influence the objective which works via apertureInfo.beam(i).bixelIndMap
+% for leaves I need to check if that particular leaf row has bixels that
 
 % all stuff can be done per beam direction and then I use repmat to build
 % up the big matrix

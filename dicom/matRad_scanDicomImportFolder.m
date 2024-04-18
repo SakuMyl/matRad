@@ -59,18 +59,21 @@ if ~isempty(fileList)
         waitbar((numOfFiles+1-i) / steps)
         try % try to get DicomInfo
             if verLessThan('matlab','9')
+                disp(fileList{i});
                 info = dicominfo(fileList{i});
             else
                 info = dicominfo(fileList{i},'UseDictionaryVR',true);
             end
-        catch
+        catch e
+            disp(e);
             fileList(i,:) = [];
             matRad_progress(numOfFiles+1-i, numOfFiles);
             continue;
         end
         try
             fileList{i,2} = info.Modality;
-        catch
+        catch e
+            disp(e);
             fileList{i,2} = NaN;
         end
         
@@ -90,7 +93,7 @@ if ~isempty(fileList)
               fileList = parseDicomTag(fileList,info,'SeriesInstanceUID',i,4);
 
         end
-        
+
         fileList = parseDicomTag(fileList,info,'SeriesNumber',i,5,@seriesnum2str); %We want to make sure the series number is stored as string
         fileList = parseDicomTag(fileList,info,'FamilyName',i,6);
         fileList = parseDicomTag(fileList,info,'GivenName',i,7);
@@ -102,7 +105,8 @@ if ~isempty(fileList)
             else
                 fileList{i,9} = NaN;
             end
-        catch
+        catch e
+            disp(e);
             fileList{i,9} = NaN;
         end
         try
@@ -111,7 +115,8 @@ if ~isempty(fileList)
             else
                 fileList{i,10} = NaN;
             end
-        catch
+        catch e
+            disp(e);
             fileList{i,10} = NaN;
         end
         try
@@ -128,7 +133,8 @@ if ~isempty(fileList)
             else
                 fileList{i,11} = NaN;
             end
-        catch
+        catch e
+            disp(e);
             fileList{i,11} = NaN;
         end
         try
@@ -139,7 +145,8 @@ if ~isempty(fileList)
             else
                 fileList{i,12} = NaN;
             end
-        catch
+        catch e
+            disp(e);
             fileList{i,12} = NaN;
         end
         % writing corresponding dose dist.
@@ -156,7 +163,8 @@ if ~isempty(fileList)
                 fileList{i,13} = {'NaN'};
             end
 
-        catch
+        catch e
+            disp(e);
             fileList{i,13} = {'NaN'};
         end
         matRad_progress(numOfFiles+1-i, numOfFiles);
@@ -204,8 +212,9 @@ try
    else
       fileList{row,column} = defaultPlaceHolder;
    end
-catch
-   fileList{row,column} = NaN;
+catch e
+    disp(e);
+    fileList{row,column} = NaN;
 end
 
 if ~warnDlgDICOMtagShown && strcmp(fileList{row,column},defaultPlaceHolder) && (column == 3 || column == 4)

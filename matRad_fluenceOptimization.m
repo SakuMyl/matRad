@@ -41,7 +41,6 @@ end
 % consider VOI priorities
 cst  = matRad_setOverlapPriorities(cst);
 
-
 % check & adjust objectives and constraints internally for fractionation 
 for i = 1:size(cst,1)
     %Compatibility Layer for old objective format
@@ -65,13 +64,23 @@ for i = 1:size(cst,1)
         
         obj = obj.setDoseParameters(obj.getDoseParameters()/pln.numOfFractions);
         
-        cst{i,6}{j} = obj;        
+        cst{i,6}{j} = obj;
     end
 end
 
-% resizing cst to dose cube resolution 
+% resizing cst to dose cube resolution
 cst = matRad_resizeCstToGrid(cst,dij.ctGrid.x,dij.ctGrid.y,dij.ctGrid.z,...
                                  dij.doseGrid.x,dij.doseGrid.y,dij.doseGrid.z);
+
+% Resize dose for voxel based optimization to dose grid
+for i = 1:size(cst, 1)
+    for j = 1:size(cst{i, 6}, 2)
+        if ~isempty(cst{i,6}) && (isa(cst{i,6}{j}, 'DoseObjectives.matRad_VoxelSquaredDeviation') || isa(cst{i,6}{j}, 'DoseObjectives.matRad_VoxelSquaredOverdosing'))
+            cst{i,6}{j}.dose = imresize3(cst{i,6}{j}.dose, dij.doseGrid.dimensions);
+            cst{i,6}{j}.dose = cst{i,6}{j}.dose(cst{i,4}{1});
+        end
+    end
+end
 
 % find target indices and described dose(s) for weight vector
 % initialization
@@ -82,7 +91,6 @@ ixTarget   = [];
 for i = 1:size(cst,1)
     if isequal(cst{i,3},'TARGET') && ~isempty(cst{i,6})
         V = [V;cst{i,4}{1}];
-        
         %Iterate through objectives/constraints
         fDoses = [];
         for fObjCell = cst{i,6}
@@ -92,8 +100,8 @@ for i = 1:size(cst,1)
             %Add do dose list
             fDoses = [fDoses dParams];
         end
-                
-        
+
+
         doseTarget = [doseTarget fDoses];
         ixTarget   = [ixTarget i*ones(1,length(fDoses))];
     end
@@ -165,8 +173,8 @@ elseif (strcmp(pln.propOpt.bioOptimization,'LEMIV_effect') || strcmp(pln.propOpt
            wInit    =  ((doseTarget)/(TolEstBio*maxCurrRBE*max(dij.physicalDose{1}(V,:)*wOnes)))* wOnes;
     end
     
-else 
-    bixelWeight =  (doseTarget)/(mean(dij.physicalDose{1}(V,:)*wOnes)); 
+else
+    bixelWeight =  (doseTarget)/(mean(dij.physicalDose{1}(V,:)*wOnes));
     wInit       = wOnes * bixelWeight;
     pln.propOpt.bioOptimization = 'none';
 end
@@ -213,7 +221,7 @@ switch pln.propOpt.optimizer
         warning(['Optimizer ''' pln.propOpt.optimizer ''' not known! Fallback to IPOPT!']);
         optimizer = matRad_OptimizerIPOPT;
 end
-        
+
 if ~optimizer.IsAvailable()
     matRad_cfg.dispError(['Optimizer ''' pln.propOpt.optimizer ''' not available!']);
 end

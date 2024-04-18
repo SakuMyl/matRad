@@ -1,4 +1,4 @@
-function cst = matRad_createCst(structures)
+function cst = matRad_createCst(structures, prescDose)
 % matRad function to create a cst struct upon dicom import
 % 
 % call
@@ -36,7 +36,7 @@ cst = cell(nStructures,6);
 %Create set of default colors
 defaultColors = colorcube(nStructures);
 
-for i = 1:size(structures,2)
+for i = 1:nStructures
     cst{i,1} = i - 1; % first organ has number 0    
     cst{i,2} = structures(i).structName;
     
@@ -54,8 +54,8 @@ for i = 1:size(structures,2)
      
         % default objectives for targets
         objective = DoseObjectives.matRad_SquaredDeviation;
-        objective.penalty = 800;
-        objective.parameters = {30};  %Default reference Dose
+        objective.penalty = 20;
+        objective.parameters = {prescDose};
         cst{i,6}{1} = struct(objective);
         
     else

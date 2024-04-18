@@ -96,6 +96,6 @@ dose.dicomInfo.DoseSummationType       = doseInfo.DoseSummationType;
 %always given
 dose.dicomInfo.SOPClassUID             = doseInfo.SOPClassUID;
 dose.dicomInfo.SOPInstanceUID          = doseInfo.SOPInstanceUID;
-dose.dicomInfo.ReferencedRTPlanSequence = doseInfo.ReferencedRTPlanSequence;
+%dose.dicomInfo.ReferencedRTPlanSequence = doseInfo.ReferencedRTPlanSequence;
 
 end

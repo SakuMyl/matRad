@@ -120,6 +120,7 @@ if iscell(patient_listbox)
     %handles.patient_listbox.String = patient_listbox;
     set(handles.patient_listbox,'String',patient_listbox,'Value',1);
     guidata(hObject, handles);
+    assignin('base', 'handles', handles);
 end
 
 % --- Executes on selection change in patient_listbox.

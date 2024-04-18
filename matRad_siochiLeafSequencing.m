@@ -95,7 +95,7 @@ for i = 1:numOfBeams
     
     %Save weights in fluence matrix.
     fluenceMx(indInFluenceMx) = wOfCurrBeams;
-    
+
     % Stratification
     calFac = max(fluenceMx(:));
     D_k = round(fluenceMx/calFac*numOfLevels);

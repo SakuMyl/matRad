@@ -145,11 +145,11 @@ for i = 1:length(pln.propStf.gantryAngles)
     coordsAtIsoCenterPlane(:,2) = (rot_coords(:,3)*SAD)./(SAD + rot_coords(:,2));
     
     % Take unique rows values for beamlets positions. Calculate position of
-    % central ray for every bixel    
+    % central ray for every bixel
     rayPos = unique(pln.propStf.bixelWidth*round([           coordsAtIsoCenterPlane(:,1) ... 
                                                   zeros(size(coordsAtIsoCenterPlane,1),1) ...
                                                              coordsAtIsoCenterPlane(:,2)]/pln.propStf.bixelWidth),'rows');
-                                                  
+    
     % pad ray position array if resolution of target voxel grid not sufficient
     maxCtResolution = max([ct.resolution.x ct.resolution.y ct.resolution.z]);
     if pln.propStf.bixelWidth < maxCtResolution
@@ -162,7 +162,7 @@ for i = 1:length(pln.propStf.gantryAngles)
                 rayPos = [rayPos; origRayPos(:,1)+j*pln.propStf.bixelWidth origRayPos(:,2) origRayPos(:,3)+k*pln.propStf.bixelWidth];
             end
         end
-     end
+    end
 
      % remove spaces within rows of bixels for DAO
      if pln.propOpt.runDAO
