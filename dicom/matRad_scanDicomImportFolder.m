@@ -52,11 +52,8 @@ fileList = matRad_listAllFiles(patDir);
 if ~isempty(fileList)
     %% check for dicom files and differentiate patients, types, and series
     numOfFiles = numel(fileList(:,1));
-    h = waitbar(0,'Please wait...');
-    %h.WindowStyle = 'Modal';
     steps = numOfFiles;
     for i = numOfFiles:-1:1
-        waitbar((numOfFiles+1-i) / steps)
         try % try to get DicomInfo
             if verLessThan('matlab','9')
                 disp(fileList{i});
@@ -170,7 +167,6 @@ if ~isempty(fileList)
         matRad_progress(numOfFiles+1-i, numOfFiles);
         
     end
-    close(h)
     
     if ~isempty(fileList)
         patientList = unique(fileList(:,3));

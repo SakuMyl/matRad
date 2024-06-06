@@ -54,7 +54,7 @@ for i = 1:nStructures
      
         % default objectives for targets
         objective = DoseObjectives.matRad_SquaredDeviation;
-        objective.penalty = 20;
+        objective.penalty = 100;
         objective.parameters = {prescDose};
         cst{i,6}{1} = struct(objective);
         
